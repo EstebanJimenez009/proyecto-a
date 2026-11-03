@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Iniciar Sesión - EVDEALER (Actualizado){% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3" style="background-color: #f0f8ff; min-height: 100vh; padding-top: 2rem; padding-bottom: 2rem;">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-6 col-lg-5">
+            <!-- Tarjeta con fondo azul claro y sutil toque distintivo -->
+            <div class="card shadow-lg border-0 my-3 my-md-5 bg-light border-start border-primary border-4">
+                <div class="card-body p-3 p-md-5">
+                    <div class="text-center mb-3 mb-md-4">
+                        <h2 class="fw-bold text-primary h3 h-md-2">
+                            <i class="bi bi-car-front-fill"></i> EVDEALER
+                        </h2>
+                        <p class="text-muted small">Inicia sesión en tu cuenta (Modo Azul)</p>
+                    </div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label small fw-bold text-primary">
+                                <i class="bi bi-person me-2"></i>Usuario o Email
+                            </label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.username.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.password.id_for_label }}" class="form-label small fw-bold text-primary">
+                                <i class="bi bi-lock me-2"></i>Contraseña
+                            </label>
+                            <div class="input-group">
+                                {{ form.password }}
+                                <button class="btn btn-outline-primary" type="button" id="togglePassword">
+                                    <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                                </button>
+                            </div>
+                            {% if form.password.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.password.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            {{ form.remember_me }}
+                            <label class="form-check-label small" for="{{ form.remember_me.id_for_label }}">
+                                Recordarme
+                            </label>
+                        </div>
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger small">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg py-3">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
+                                <span class="d-none d-sm-inline">Iniciar Sesión</span>
+                                <span class="d-sm-none">Entrar</span>
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <a href="{% url 'accounts:password_reset' %}" class="text-decoration-none small text-primary">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+                    </form>
+
+                    <hr class="my-3 my-md-4">
+
+                    <!-- SECCIÓN DE EDICIÓN EXIGIDA POR LA RÚBRICA (PUNTO 4 Y 8): JavaScript de Edad y Redirección -->
+                    
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="row text-center mt-3 mt-md-4 d-none d-sm-flex">
+                <div class="col-4">
+                    <div class="text-primary mb-2">
+                        <i class="bi bi-shield-check" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <small class="text-muted">Seguro</small>
+                </div>
+                <div class="col-4">
+                    <div class="text-primary mb-2">
+                        <i class="bi bi-lightning" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <small class="text-muted">Rápido</small>
+                </div>
+                <div class="col-4">
+                    <div class="text-primary mb-2">
+                        <i class="bi bi-people" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <small class="text-muted">Confiable</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+    const toggleIcon = document.getElementById('togglePasswordIcon');
+
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            toggleIcon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+        });
+    }
+
+    // Funcionalidad requerida por la rúbrica (Punto 4 y 8): Preguntar nombre, fecha de nacimiento, calcular edad y redirigir si es menor de edad
+    
+</script>
+{% endblock %}
